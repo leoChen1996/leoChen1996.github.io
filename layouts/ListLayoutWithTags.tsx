@@ -9,7 +9,6 @@ import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
-import tagData from 'app/tag-data.json'
 
 interface PaginationProps {
   totalPages: number
@@ -62,6 +61,22 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
   )
 }
 
+function getTagsCount(posts: CoreContent<Blog>[]) {
+  return posts.reduce(
+    (prev, curr) => {
+      curr.tags.forEach((tag) => {
+        if (prev[tag]) {
+          prev[tag] += 1
+        } else {
+          prev[tag] = 1
+        }
+      })
+      return prev
+    },
+    {} as Record<string, number>
+  )
+}
+
 export default function ListLayoutWithTags({
   posts,
   title,
@@ -69,7 +84,7 @@ export default function ListLayoutWithTags({
   pagination,
 }: ListLayoutProps) {
   const pathname = usePathname()
-  const tagCounts = tagData as Record<string, number>
+  const tagCounts = getTagsCount(posts)
   const tagKeys = Object.keys(tagCounts)
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
 
@@ -86,11 +101,11 @@ export default function ListLayoutWithTags({
         <div className="flex sm:space-x-24">
           <div className="hidden h-full max-h-screen min-w-[280px] max-w-[280px] flex-wrap overflow-auto rounded bg-gray-50 pt-5 shadow-md dark:bg-gray-900/70 dark:shadow-gray-800/40 sm:flex">
             <div className="px-6 py-4">
-              {pathname.startsWith('/blog') ? (
-                <h3 className="font-bold uppercase text-primary-500">All Posts</h3>
+              {pathname.startsWith('/articles') ? (
+                <h3 className="font-bold uppercase text-primary-500">全部</h3>
               ) : (
                 <Link
-                  href={`/blog`}
+                  href={`/articles`}
                   className="font-bold uppercase text-gray-700 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-500"
                 >
                   All Posts
