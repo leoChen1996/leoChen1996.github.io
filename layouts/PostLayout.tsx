@@ -118,7 +118,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     </h2>
                     <div className="flex flex-wrap">
                       {tags.map((tag) => (
-                        <Tag key={tag} text={tag} />
+                        <Tag key={tag} tag={tag} displayName={tag} />
                       ))}
                     </div>
                   </div>

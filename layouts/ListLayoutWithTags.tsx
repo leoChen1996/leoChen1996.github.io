@@ -21,6 +21,18 @@ interface ListLayoutProps {
   pagination?: PaginationProps
 }
 
+type ITag = {
+  tag: string
+  displayName: string
+}
+
+export const tagMap = {
+  economy: '經濟學',
+  sociology: '社會學',
+  psychology: '心理學',
+  politics: '政治學',
+}
+
 function Pagination({ totalPages, currentPage }: PaginationProps) {
   const pathname = usePathname()
   const basePath = pathname.split('/')[1]
@@ -85,8 +97,8 @@ export default function ListLayoutWithTags({
 }: ListLayoutProps) {
   const pathname = usePathname()
   const tagCounts = getTagsCount(posts)
-  const tagKeys = Object.keys(tagCounts)
-  const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
+  const tagKeys: ITag[] = Object.keys(tagCounts).map((tag) => ({ tag, displayName: tagMap[tag] }))
+  const sortedTags = tagKeys.sort((a, b) => tagCounts[b.tag] - tagCounts[a.tag])
 
   const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
 
@@ -112,20 +124,20 @@ export default function ListLayoutWithTags({
                 </Link>
               )}
               <ul>
-                {sortedTags.map((t) => {
+                {sortedTags.map(({ tag, displayName }) => {
                   return (
-                    <li key={t} className="my-3">
-                      {pathname.split('/tags/')[1] === slug(t) ? (
+                    <li key={tag} className="my-3">
+                      {pathname.split('/tags/')[1] === slug(tag) ? (
                         <h3 className="inline px-3 py-2 text-sm font-bold uppercase text-primary-500">
-                          {`${t} (${tagCounts[t]})`}
+                          {`${displayName} (${tagCounts[tag]})`}
                         </h3>
                       ) : (
                         <Link
-                          href={`/tags/${slug(t)}`}
+                          href={`/tags/${slug(tag)}`}
                           className="px-3 py-2 text-sm font-medium uppercase text-gray-500 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-500"
-                          aria-label={`View posts tagged ${t}`}
+                          aria-label={`View posts tagged ${displayName}`}
                         >
-                          {`${t} (${tagCounts[t]})`}
+                          {`${displayName} (${tagCounts[tag]})`}
                         </Link>
                       )}
                     </li>
@@ -155,7 +167,11 @@ export default function ListLayoutWithTags({
                             </Link>
                           </h2>
                           <div className="flex flex-wrap">
-                            {tags?.map((tag) => <Tag key={tag} text={tag} />)}
+                            {tags
+                              ?.map((tag) => ({ tag, displayName: tagMap[tag] }))
+                              .map((t) => (
+                                <Tag key={t.tag} tag={t.tag} displayName={t.displayName} />
+                              ))}
                           </div>
                         </div>
                         <div className="prose max-w-none text-gray-500 dark:text-gray-400">

@@ -6,6 +6,18 @@ import NewsletterForm from 'pliny/ui/NewsletterForm'
 
 const MAX_DISPLAY = 5
 
+type ITag = {
+  tag: string
+  displayName: string
+}
+
+export const tagMap = {
+  economy: '經濟學',
+  sociology: '社會學',
+  psychology: '心理學',
+  politics: '政治學',
+}
+
 export default function Home({ posts }) {
   return (
     <>
@@ -44,9 +56,11 @@ export default function Home({ posts }) {
                             </Link>
                           </h2>
                           <div className="flex flex-wrap">
-                            {tags.map((tag) => (
-                              <Tag key={tag} text={tag} />
-                            ))}
+                            {tags
+                              .map((tag) => ({ tag, displayName: tagMap[tag] }))
+                              .map(({ tag, displayName }) => (
+                                <Tag key={tag} tag={tag} displayName={displayName} />
+                              ))}
                           </div>
                         </div>
                         <div className="prose max-w-none text-gray-500 dark:text-gray-400">
@@ -55,11 +69,11 @@ export default function Home({ posts }) {
                       </div>
                       <div className="text-base font-medium leading-6">
                         <Link
-                          href={`/blog/${slug}`}
+                          href={`/articles/${slug}`}
                           className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                           aria-label={`Read more: "${title}"`}
                         >
-                          Read more &rarr;
+                          更多內容 &rarr;
                         </Link>
                       </div>
                     </div>
@@ -77,7 +91,7 @@ export default function Home({ posts }) {
             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
             aria-label="All posts"
           >
-            All Posts &rarr;
+            全部內容 &rarr;
           </Link>
         </div>
       )}
