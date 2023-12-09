@@ -9,6 +9,7 @@ import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+import { getTranslation } from '../app/i18n'
 
 const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 const discussUrl = (path) =>
@@ -32,11 +33,21 @@ interface LayoutProps {
   next?: { path: string; title: string }
   prev?: { path: string; title: string }
   children: ReactNode
+  lng: string
 }
 
-export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
+export default async function PostLayout({
+  content,
+  authorDetails,
+  next,
+  prev,
+  children,
+  lng,
+}: LayoutProps) {
   const { filePath, path, slug, date, title, tags } = content
   const basePath = path.split('/')[0]
+  const { t: ta } = await getTranslation(lng, 'articles')
+  const { t: tt } = await getTranslation(lng, 'tags')
 
   return (
     <SectionContainer>
@@ -50,7 +61,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
                     <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+                      {new Date(date).toLocaleDateString(lng, postDateTemplate)}
                     </time>
                   </dd>
                 </div>
@@ -104,13 +115,13 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 {tags && (
                   <div className="py-4 xl:py-8">
                     <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                      分類
+                      {ta('category')}
                     </h2>
                     <div className="flex flex-wrap">
                       {tags
                         .map((tag) => ({ tag, displayName: tagMap[tag] }))
-                        .map(({ tag, displayName }) => (
-                          <Tag key={tag} tag={tag} displayName={displayName} />
+                        .map(({ tag }) => (
+                          <Tag key={tag} tag={tag} displayName={tt(tag)} />
                         ))}
                     </div>
                   </div>
@@ -120,7 +131,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     {prev && prev.path && (
                       <div>
                         <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                          上一篇
+                          {ta('previous')}
                         </h2>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
                           <Link href={`/${prev.path}`}>{prev.title}</Link>
@@ -130,7 +141,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     {next && next.path && (
                       <div>
                         <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                          下一篇
+                          {ta('next')}
                         </h2>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
                           <Link href={`/${next.path}`}>{next.title}</Link>
@@ -146,7 +157,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                   aria-label="Back to the blog"
                 >
-                  &larr; 返回
+                  &larr; {ta('back')}
                 </Link>
               </div>
             </footer>

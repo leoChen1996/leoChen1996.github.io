@@ -15,6 +15,7 @@ interface LayoutProps {
   children: ReactNode
   next?: { path: string; title: string }
   prev?: { path: string; title: string }
+  lng: string
 }
 
 export default function PostMinimal({ content, next, prev, children }: LayoutProps) {

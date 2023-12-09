@@ -1,23 +1,25 @@
 import { Authors, allAuthors } from 'contentlayer/generated'
 import { genPageMetadata } from '../seo'
 import Link from '@/components/Link'
+import { getTranslation } from '../../i18n'
 
 export const metadata = genPageMetadata({ title: 'scholars' })
 
-export default function Page() {
+export default async function Page({ params: { lng } }) {
+  const { t } = await getTranslation(lng, 'scholar')
   const infos = allAuthors.map((a) => ({
     name: a.name,
     company: a.company,
     occupation: a.occupation,
     slug: a.slug,
   })) as Pick<Authors, 'name' | 'company' | 'occupation' | 'slug'>[]
-  const headings = ['姓名', '機構', '職位']
+  const headings = [t('name'), t('organization'), t('occupation')]
 
   return (
     <>
       <div className="pb-6 pt-6">
         <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-          研究學者
+          {t('title')}
         </h1>
       </div>
       <div className="contianer mx-auto flex justify-center">
