@@ -128,9 +128,40 @@ export const Authors = defineDocumentType(() => ({
   computedFields,
 }))
 
+export const Activities = defineDocumentType(() => ({
+  name: 'Activities',
+  filePathPattern: 'activities/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    place: { type: 'string', required: true },
+    coverImg: { type: 'string' },
+    summary: { type: 'string' },
+    authors: { type: 'list', of: { type: 'string' } },
+    layout: { type: 'string' },
+  },
+  computedFields: {
+    ...computedFields,
+    structuredData: {
+      type: 'json',
+      resolve: (doc) => ({
+        '@context': 'https://schema.org',
+        '@type': 'Activity',
+        headline: doc.title,
+        datePublished: doc.date,
+        dateModified: doc.date,
+        description: doc.summary,
+        image: doc.coverImg || siteMetadata.socialBanner,
+        url: `${siteMetadata.siteUrl}/${doc._raw.flattenedPath}`,
+      }),
+    },
+  },
+}))
+
 export default makeSource({
   contentDirPath: 'data',
-  documentTypes: [Blog, Authors],
+  documentTypes: [Blog, Authors, Activities],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [

@@ -1,10 +1,6 @@
 import { Authors, allAuthors } from 'contentlayer/generated'
-import { MDXLayoutRenderer } from 'pliny/mdx-components'
-import AuthorLayout from '@/layouts/AuthorLayout'
-import { coreContent } from 'pliny/utils/contentlayer'
 import { genPageMetadata } from '../seo'
 import Link from '@/components/Link'
-import { slug } from 'github-slugger'
 
 export const metadata = genPageMetadata({ title: 'scholars' })
 

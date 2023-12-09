@@ -1,7 +1,9 @@
+import siteMetadata from '@/data/siteMetadata'
 import Image from './Image'
 import Link from './Link'
+import { formatDate } from 'pliny/utils/formatDate'
 
-const Card = ({ title, description, imgSrc, href }) => (
+const Card = ({ title, description, imgSrc, href, date, place }) => (
   <div className="md max-w-[544px] p-4 md:w-1/2">
     <div
       className={`${
@@ -38,6 +40,19 @@ const Card = ({ title, description, imgSrc, href }) => (
             title
           )}
         </h2>
+        {date ? (
+          <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">
+            時間：
+            <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+          </p>
+        ) : (
+          ''
+        )}
+        {place ? (
+          <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">地點：{place}</p>
+        ) : (
+          ''
+        )}
         <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">{description}</p>
         {href && (
           <Link
@@ -45,7 +60,7 @@ const Card = ({ title, description, imgSrc, href }) => (
             className="text-base font-medium leading-6 text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
             aria-label={`Link to ${title}`}
           >
-            Learn more &rarr;
+            了解更多&rarr;
           </Link>
         )}
       </div>
