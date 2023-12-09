@@ -45,17 +45,17 @@ export const metadata: Metadata = {
       'application/rss+xml': `${siteMetadata.siteUrl}/feed.xml`,
     },
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+  // robots: {
+  //   index: true,
+  //   follow: true,
+  //   googleBot: {
+  //     index: true,
+  //     follow: true,
+  //     'max-video-preview': -1,
+  //     'max-image-preview': 'large',
+  //     'max-snippet': -1,
+  //   },
+  // },
   twitter: {
     title: siteMetadata.title,
     card: 'summary_large_image',

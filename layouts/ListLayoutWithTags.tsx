@@ -10,6 +10,7 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { getTranslation } from '../app/i18n'
 import { usePathname } from 'next/navigation'
+import { useTranslation } from '../app/i18n/client'
 
 interface PaginationProps {
   totalPages: number
@@ -36,10 +37,9 @@ export const tagMap = {
   politics: '政治學',
 }
 
-async function Pagination({ totalPages, currentPage, lng }: PaginationProps) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+function Pagination({ totalPages, currentPage, lng }: PaginationProps) {
   const pathname = usePathname()
-  const { t } = await getTranslation(lng, 'articles')
+  const { t } = useTranslation(lng, 'articles')
   const basePath = pathname?.split('/')[1]
   const prevPage = currentPage - 1 > 0
   const nextPage = currentPage + 1 <= totalPages
@@ -94,17 +94,16 @@ function getTagsCount(posts: CoreContent<Blog>[]) {
   )
 }
 
-export default async function ListLayoutWithTags({
+export default function ListLayoutWithTags({
   posts,
   title,
   initialDisplayPosts = [],
   pagination,
   lng,
 }: ListLayoutProps) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const pathname = usePathname()
-  const { t } = await getTranslation(lng, 'articles')
-  const { t: tt } = await getTranslation(lng, 'tags')
+  const { t } = useTranslation(lng, 'articles')
+  const { t: tt } = useTranslation(lng, 'tags')
   const tagCounts = getTagsCount(posts)
   const tagKeys: ITag[] = Object.keys(tagCounts).map((tag) => ({ tag, displayName: tagMap[tag] }))
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b.tag] - tagCounts[a.tag])
@@ -115,7 +114,7 @@ export default async function ListLayoutWithTags({
     <>
       <div>
         <div className="pb-6 pt-6">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+          <h1 className="text-3xl font-extrabold uppercase leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             {title}
           </h1>
         </div>
