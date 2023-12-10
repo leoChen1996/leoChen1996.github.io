@@ -19,6 +19,7 @@ export const tagMap = {
 }
 
 export default async function Home({ posts, lng }) {
+  console.log('=>(Main.tsx:22) posts', posts)
   const { t } = await getTranslation(lng)
   return (
     <>
@@ -32,7 +33,7 @@ export default async function Home({ posts, lng }) {
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && t('no post')}
           {posts.slice(0, MAX_DISPLAY).map((post) => {
-            const { slug, date, title, summary, tags } = post
+            const { slug, date, title, summary, tags, type } = post
             return (
               <li key={slug} className="py-12">
                 <article>
@@ -48,18 +49,21 @@ export default async function Home({ posts, lng }) {
                         <div>
                           <h2 className="text-2xl font-bold leading-8 tracking-tight">
                             <Link
-                              href={`/articles/${slug}`}
+                              href={`/${lng}/${
+                                type === 'Activities' ? 'activities' : 'articles'
+                              }/${slug}`}
                               className="text-gray-900 dark:text-gray-100"
                             >
                               {title}
                             </Link>
                           </h2>
                           <div className="flex flex-wrap">
-                            {tags
-                              .map((tag) => ({ tag, displayName: tagMap[tag] }))
-                              .map(({ tag, displayName }) => (
-                                <Tag key={tag} tag={tag} displayName={displayName} />
-                              ))}
+                            {tags &&
+                              tags
+                                .map((tag) => ({ tag, displayName: tagMap[tag] }))
+                                .map(({ tag, displayName }) => (
+                                  <Tag lng={lng} key={tag} tag={tag} displayName={displayName} />
+                                ))}
                           </div>
                         </div>
                         <div className="prose max-w-none text-gray-500 dark:text-gray-400">
@@ -68,7 +72,9 @@ export default async function Home({ posts, lng }) {
                       </div>
                       <div className="text-base font-medium leading-6">
                         <Link
-                          href={`/articles/${slug}`}
+                          href={`/${lng}/${
+                            type === 'Activities' ? 'activities' : 'articles'
+                          }/${slug}`}
                           className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                           aria-label={`Read more: "${title}"`}
                         >

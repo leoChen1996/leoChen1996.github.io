@@ -35,7 +35,7 @@ export default async function Page({ params: { lng } }) {
           {sortedTags.map((tag) => {
             return (
               <div key={tag.tag} className="mb-2 mr-5 mt-2">
-                <Tag tag={tag.tag} displayName={t(tag.tag)} />
+                <Tag lng={lng} tag={tag.tag} displayName={t(tag.tag)} />
                 <Link
                   href={`/tags/${slug(tag.tag)}`}
                   className="-ml-2 text-sm font-semibold uppercase text-gray-600 dark:text-gray-300"

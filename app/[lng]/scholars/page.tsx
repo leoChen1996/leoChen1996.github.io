@@ -36,7 +36,7 @@ export default async function Page({ params: { lng } }) {
               <tr key={index}>
                 <td>
                   <Link
-                    href={`/scholars/${info.slug}`}
+                    href={`/${lng}/scholars/${info.slug}`}
                     className="text-sm font-semibold text-gray-600 dark:text-gray-300"
                     aria-label={`View scholar ${info.name}`}
                   >

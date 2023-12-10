@@ -57,7 +57,8 @@ export const generateStaticParams = async () => {
   return allActivities.map((p) => ({ slug: p.slug }))
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({ params }: { params: { slug: string; lng: string } }) {
+  const lng = params.lng
   const slug = decodeURI(params.slug)
   // Filter out drafts in production
   const sortedCoreContents = allCoreContent(sortPosts(allActivities))
@@ -91,7 +92,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
+      <Layout lng={lng} content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
         <MDXLayoutRenderer code={activity.body.code} components={components} toc={activity.toc} />
       </Layout>
     </>

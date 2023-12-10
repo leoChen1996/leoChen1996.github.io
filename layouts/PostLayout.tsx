@@ -47,6 +47,7 @@ export default async function PostLayout({
   const { filePath, path, slug, date, title, tags } = content
   const basePath = path.split('/')[0]
   const { t: ta } = await getTranslation(lng, 'articles')
+  console.log('=>(PostLayout.tsx:50) lng', lng)
   const { t: tt } = await getTranslation(lng, 'tags')
 
   return (
@@ -121,7 +122,7 @@ export default async function PostLayout({
                       {tags
                         .map((tag) => ({ tag, displayName: tagMap[tag] }))
                         .map(({ tag }) => (
-                          <Tag key={tag} tag={tag} displayName={tt(tag)} />
+                          <Tag lng={lng} key={tag} tag={tag} displayName={tt(tag)} />
                         ))}
                     </div>
                   </div>

@@ -117,6 +117,7 @@ export const Authors = defineDocumentType(() => ({
   fields: {
     name: { type: 'string', required: true },
     avatar: { type: 'string' },
+    date: { type: 'date', required: true },
     occupation: { type: 'string' },
     company: { type: 'string' },
     email: { type: 'string' },
@@ -137,6 +138,7 @@ export const Activities = defineDocumentType(() => ({
     date: { type: 'date', required: true },
     place: { type: 'string', required: true },
     coverImg: { type: 'string' },
+    tags: { type: 'list', of: { type: 'string' }, default: [] },
     summary: { type: 'string' },
     authors: { type: 'list', of: { type: 'string' } },
     layout: { type: 'string' },

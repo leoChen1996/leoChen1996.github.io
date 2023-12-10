@@ -26,7 +26,7 @@ export default async function Activities({ params: { lng } }) {
                 place={d.place}
                 description={d.summary}
                 imgSrc={d.coverImg}
-                href={`/activities/${d.slug}`}
+                href={`/${lng}/activities/${d.slug}`}
                 lng={lng}
               />
             ))}
