@@ -19,7 +19,6 @@ export const tagMap = {
 }
 
 export default async function Home({ posts, lng }) {
-  console.log('=>(Main.tsx:22) posts', posts)
   const { t } = await getTranslation(lng)
   return (
     <>

@@ -22,7 +22,7 @@ interface ListLayoutProps {
   title: string
   initialDisplayPosts?: CoreContent<Blog>[]
   pagination?: PaginationProps
-  lng?: string
+  lng: string
 }
 
 type ITag = {

@@ -85,7 +85,14 @@ export default function RootLayout({ children, params: { lng } }) {
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-sans">
-              <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+              <SearchProvider
+                searchConfig={
+                  {
+                    ...siteMetadata.search,
+                    kbarConfig: { searchDocumentsPath: false },
+                  } as SearchConfig
+                }
+              >
                 <Header lng={lng} />
                 <main className="mb-auto">{children}</main>
               </SearchProvider>
